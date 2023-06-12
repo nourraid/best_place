@@ -142,7 +142,6 @@ class propertyController extends Controller
         }
 
 
-        $property = new Property();
         $property->name = $request->name;
         $property->description = $request->description;
         $property->price = $request->price;
