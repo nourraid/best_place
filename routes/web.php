@@ -5,6 +5,8 @@ use \App\Http\Controllers\admin\typeController ;
 use \App\Http\Controllers\admin\userController;
 use \App\Http\Controllers\admin\cityController ;
 use \App\Http\Controllers\admin\propertyController ;
+use \App\Http\Controllers\admin\ratingController;
+use \App\Http\Controllers\admin\reservationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +27,8 @@ Route::prefix('admin')->group(function () {
     Route::resource('/user', userController::class);
     Route::resource('/city', cityController::class);
     Route::resource('/property', propertyController::class);
+    Route::resource('/rating', ratingController::class);
+    Route::resource('/reservation', reservationController::class);
 
 });
 

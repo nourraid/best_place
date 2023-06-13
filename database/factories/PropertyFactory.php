@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
+use App\Models\Type;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +20,14 @@ class PropertyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "name"=>$this->faker->name(),
+            "description"=>$this->faker->text(),
+            "price"=>$this->faker->randomFloat(2, 1, 100),
+            "image"=>$this->faker->imageUrl(),
+            "address"=>$this->faker->address(),
+            "city_id"=>City::all()->random(),
+            "type_id"=>Type::all()->random(),
+            "user_id"=>User::all()->random()
         ];
     }
 }

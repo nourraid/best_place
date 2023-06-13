@@ -19,6 +19,15 @@ class User extends Authenticatable
         return $this->hasMany(Property::class);
     }
 
+
+    public function rates(){
+        return $this->hasMany(Rating::class);
+    }
+
+    public function reservation(){
+        return $this->hasMany(Reservation::class);
+    }
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

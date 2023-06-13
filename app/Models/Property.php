@@ -15,8 +15,13 @@ class Property extends Model
         return $this->belongsTo(Type::class);
     }
 
-    public function property(){
-        return $this->belongsTo(Property::class);
+    public function rates(){
+        return $this->hasMany(Rating::class);
+    }
+
+
+    public function reservation(){
+        return $this->hasMany(Reservation::class);
     }
 
     use HasFactory;
