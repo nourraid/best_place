@@ -18,6 +18,7 @@
                         <h3>All Property</h3>
                     </div>
                     <div class="col-lg-3 col-6 stats_info counter_grid mt-lg-0 mt-4">
+
                         <p class="counter">{{array_sum($rates->toArray())/count($rates)}}</p>
 
                         <h3>Rating Avg</h3>
