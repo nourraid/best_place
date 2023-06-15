@@ -7,6 +7,8 @@ use \App\Http\Controllers\admin\cityController ;
 use \App\Http\Controllers\admin\propertyController ;
 use \App\Http\Controllers\admin\ratingController;
 use \App\Http\Controllers\admin\reservationController;
+use \App\Http\Controllers\frontController ;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,7 +21,7 @@ use \App\Http\Controllers\admin\reservationController;
 */
 
 Route::get('/', function () {
-    return view('admin.index');
+    return view('front_site.layout.master');
 });
 
 Route::prefix('admin')->group(function () {
@@ -29,7 +31,8 @@ Route::prefix('admin')->group(function () {
     Route::resource('/property', propertyController::class);
     Route::resource('/rating', ratingController::class);
     Route::resource('/reservation', reservationController::class);
-
 });
 
+
+Route::get('/about', [frontController::class, 'aboutUs'])->name('about');
 
