@@ -33,6 +33,13 @@ Route::prefix('admin')->group(function () {
     Route::resource('/reservation', reservationController::class);
 });
 
+Route::prefix('user')->group(function () {
+    Route::get('/home', [frontController::class, 'home'])->name('home');
+    Route::get('/about', [frontController::class, 'aboutUs'])->name('about');
+    Route::get('/contact', [frontController::class, 'contactUs'])->name('contact');
+    Route::post('/send_question', [frontController::class, 'send_question'])->name('send_question');
+});
 
-Route::get('/about', [frontController::class, 'aboutUs'])->name('about');
+
+
 

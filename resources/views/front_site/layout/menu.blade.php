@@ -1,7 +1,7 @@
 <header id="site-header" class="fixed-top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light stroke py-lg-0">
-            <h1><a class="navbar-brand" href="index.html">
+            <h1><a class="navbar-brand" href="{{route('home')}}">
                     Real<span class="sub-color">Houzing</span>
                 </a></h1>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
@@ -13,17 +13,14 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav mx-lg-auto my-2 my-lg-0 navbar-nav-scroll">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="services.html">Services</a>
+                        <a class="nav-link" href="{{route('about')}}">About</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="{{route('contact')}}">Contact</a>
                     </li>
                 </ul>
                 <!--/search-->
@@ -66,14 +63,13 @@
         <div class="container">
             <div class="w3breadcrumb-gids">
                 <div class="w3breadcrumb-left text-left">
-                    <h2 class="inner-w3-title mt-sm-5 mt-4">
-                        About Us </h2>
+                    <h2 class="inner-w3-title mt-sm-5 mt-4">@yield('title')</h2>
 
                 </div>
                 <div class="w3breadcrumb-right">
                     <ul class="breadcrumbs-custom-path">
                         <li><a href="index.html">Home</a></li>
-                        <li class="active"><span class="fas fa-angle-double-right mx-2"></span> About Us</li>
+                        <li class="active"><span class="fas fa-angle-double-right mx-2"></span>@yield('title')</li>
                     </ul>
                 </div>
             </div>
