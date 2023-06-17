@@ -5,45 +5,25 @@
                 <div class="row footer-hny-grids sub-columns">
                     <div class="col-lg-3 sub-one-left">
                         <h6>About </h6>
-                        <p class="footer-phny pe-lg-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ute dolor sit.</p>
+                        <p class="footer-phny pe-lg-5">Best Place is real estate marketplace that allows users to search for homes, apartments, and rental properties. It provides comprehensive property listings, including photos, prices, property details, and virtual tours.</p>
                         <div class="columns-2 mt-4 pt-lg-2">
                             <ul class="social">
-                                <li><a href="#facebook"><span class="fab fa-facebook-f"></span></a>
+                                <li><a  target="_blank" href="https://www.facebook.com/profile.php?id=100077335862215&mibextid=ZbWKwL"><span class="fab fa-facebook-f"></span></a>
                                 </li>
-                                <li><a href="#linkedin"><span class="fab fa-linkedin-in"></span></a>
+                                <li><a  target="_blank" href="https://www.linkedin.com/in/nour-shaheen-384b9b18b"><span class="fab fa-linkedin-in"></span></a>
                                 </li>
-                                <li><a href="#twitter"><span class="fab fa-twitter"></span></a>
-                                </li>
-                                <li><a href="#google"><span class="fab fa-google-plus-g"></span></a>
+                                <li><a  target="_blank" href="https://twitter.com/noursha01800106?t=oGoXvVEurxFDxFfsLb4JLQ&s=09"><span class="fab fa-twitter"></span></a>
                                 </li>
 
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-2 sub-two-right">
-                        <h6>Company</h6>
-                        <ul>
-
-                            <li><a href="#why"><i class="fas fa-angle-right"></i> Why Us</a>
-                            </li>
-                            <li><a href="#licence"><i class="fas fa-angle-right"></i>Our Agents
-                                </a>
-                            </li>
-                            <li><a href="#log"><i class="fas fa-angle-right"></i>Our Offers
-                                </a></li>
-
-                            <li><a href="#career"><i class="fas fa-angle-right"></i> Careers</a></li>
-
-                        </ul>
-                    </div>
-                    <div class="col-lg-2 sub-two-right">
+                    <div class="col-lg-3 sub-two-right">
                         <h6>Services</h6>
                         <ul>
                             <li><a href="#processing"><i class="fas fa-angle-right"></i> Buy Properties</a>
                             </li>
                             <li><a href="#research"><i class="fas fa-angle-right"></i> Sell Properties</a>
-                            </li>
-                            <li><a href="#metal"><i class="fas fa-angle-right"></i> Rent Properties</a>
                             </li>
                             <li><a href="#metal"><i class="fas fa-angle-right"></i> Property Search</a>
                             </li>
@@ -51,21 +31,22 @@
 
                         </ul>
                     </div>
-                    <div class="col-lg-2 sub-two-right">
+                    <div class="col-lg-3 sub-two-right">
                         <h6>Explore</h6>
                         <ul>
-                            <li><a href="#processing"><i class="fas fa-angle-right"></i> Homes for Rent</a>
+                            <li><a href="#processing"><i class="fas fa-angle-right"></i> Land for Buy</a>
                             </li>
-                            <li><a href="#research"><i class="fas fa-angle-right"></i> Apartments for Rent</a>
+                            <li><a href="#research"><i class="fas fa-angle-right"></i> Home for Buy</a>
                             </li>
-                            <li><a href="#metal"><i class="fas fa-angle-right"></i> Homes for Sale</a>
+                            <li><a href="#metal"><i class="fas fa-angle-right"></i> Land for Sale</a>
                             </li>
-                            <li><a href="#metal"><i class="fas fa-angle-right"></i> Apartments for Sale</a>
+                            <li><a href="#metal"><i class="fas fa-angle-right"></i> Home for Sale</a>
                             </li>
 
 
                         </ul>
                     </div>
+
                     <div class="col-lg-3 sub-one-left ps-lg-5">
                         <h6>Stay Update!</h6>
                         <p class="w3f-para mb-4">Subscribe to our newsletter to receive our weekly feed.</p>
@@ -85,8 +66,7 @@
             <div class="below-section mt-5 pt-lg-3">
                 <div class="copyright-footer">
                     <div class="columns text-left">
-                        <p>© 2021 RealHouzing.All rights reserved. Design by <a href="{{asset('https://w3layouts.com/')}}" target="_blank">
-                                W3Layouts</a></p>
+                        <p>© 2023 best place.All rights reserved.</p>
                     </div>
                     <ul class="footer-w3list text-right">
                         <li><a href="#url">Privacy Policy</a>

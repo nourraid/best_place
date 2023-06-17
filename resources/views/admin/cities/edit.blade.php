@@ -38,7 +38,7 @@
       <div class="row">
         <div class="col-12">
           <a href="#" class="btn btn-secondary">Cancel</a>
-          <input type="submit" value="Edit Type" class="btn btn-success float-right">
+          <input type="submit" value="Edit City" class="btn btn-success float-right">
         </div>
       </div>
      </form>

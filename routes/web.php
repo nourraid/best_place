@@ -38,6 +38,9 @@ Route::prefix('user')->group(function () {
     Route::get('/about', [frontController::class, 'aboutUs'])->name('about');
     Route::get('/contact', [frontController::class, 'contactUs'])->name('contact');
     Route::post('/send_question', [frontController::class, 'send_question'])->name('send_question');
+    Route::get('/type_Properties/{id}', [frontController::class, 'typeProperties'])->name('typeProperties');
+    Route::get('/properties', [frontController::class, 'showAllProperties'])->name('properties');
+
 });
 
 

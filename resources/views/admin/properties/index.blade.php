@@ -103,14 +103,12 @@
                             </td>
 
                             <td>
-                                {{
-                 \App\Models\City::find($property->city_id)->name}}
+                                {{\App\Models\City::find($property->city_id)->name}}
                             </td>
 
 
                             <td>
-                                {{
-                 \App\Models\Type::find($property->type_id)->name}}
+                                {{\App\Models\Type::find($property->type_id)->name}}
                             </td>
 
 

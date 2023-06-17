@@ -2,7 +2,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light stroke py-lg-0">
             <h1><a class="navbar-brand" href="{{route('home')}}">
-                    Real<span class="sub-color">Houzing</span>
+                    Best<span class="sub-color">Place</span>
                 </a></h1>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
@@ -12,16 +12,30 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav mx-lg-auto my-2 my-lg-0 navbar-nav-scroll">
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('about')}}">About</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('contact')}}">Contact</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#Pages" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Types <span class="fa fa-angle-down ms-1"></span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @foreach(\App\Models\Type::all() as $type)
+                                <li><a class="dropdown-item pt-2" href="{{route('typeProperties' , $type->id)}}">{{$type->name}}</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('properties')}}">Properties</a>
+                    </li>
+
                 </ul>
                 <!--/search-->
                 <button id="trigger-overlay" class="searchw3-icon me-xl-4 me-lg-3" type="button"><i

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\email;
+use App\Models\Author;
+use App\Models\Book;
 use App\Models\City;
 use App\Models\Property;
 use App\Models\Rating;
@@ -41,9 +43,9 @@ class frontController extends Controller
 
     public function home(Request $request){
         $types = Type::orderByDesc('created_at')->take(6)->get();
+        $properties = Property::orderByDesc('created_at')->take(6)->get();
 
-//        dd($types);
-        return view('front_site.home', compact('types'));
+        return view('front_site.home', compact('properties' , 'types'));
     }
 
     public function send_question(Request $request){
@@ -86,9 +88,17 @@ class frontController extends Controller
         return view('front_site.contact')->with('success', 'question sent Successfully');
     }
 
-//    public function show_home_types(Request $request){
-//        $types = Type::orderByDesc('created_at')->limit(6);
-//        dd($types);
-//        return view('front_site.home', compact('types'));
-//    }
+    public function typeProperties($id){
+        $type = Type::find($id);
+        $properties = $type->properties;
+
+        return view('front_site.properties_type', compact('type', 'properties'));
+    }
+
+    public function showAllProperties()
+    {
+        $properties = Property::all();
+        return view('front_site.allProperties', compact('properties'));
+    }
+
 }
