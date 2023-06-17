@@ -72,22 +72,51 @@
         </nav>
     </div>
 </header>
-<div class="inner-banner py-5">
-    <section class="w3l-breadcrumb text-left py-sm-5 ">
-        <div class="container">
-            <div class="w3breadcrumb-gids">
-                <div class="w3breadcrumb-left text-left">
-                    <h2 class="inner-w3-title mt-sm-5 mt-4">@yield('title')</h2>
+@php
+    $x = url()->current()
+@endphp
 
+    @if(Str::contains($x , 'home'))
+        <section class="w3l-main-slider banner-slider" id="home">
+            <div class="owl-one owl-carousel owl-theme">
+                <div class="item">
+                    <div class="slider-info banner-view banner-top1">
+                        <div class="container">
+                            <div class="banner-info header-hero-19">
+                                <p class="w3hny-tag">Real Estate is our life</p>
+                                <h3 class="title-hero-19">The creativity of the new world.</h3>
+                                <a href="{{route('about')}}" class="btn btn-style btn-primary mt-4">Read More <i class="fas fa-angle-double-right ms-2"></i></a>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="w3breadcrumb-right">
-                    <ul class="breadcrumbs-custom-path">
-                        <li><a href="index.html">Home</a></li>
-                        <li class="active"><span class="fas fa-angle-double-right mx-2"></span>@yield('title')</li>
-                    </ul>
-                </div>
+
+
             </div>
 
+
+        </section>
+
+    @else
+        <div class="inner-banner py-5">
+            <section class="w3l-breadcrumb text-left py-sm-5 ">
+                <div class="container">
+                    <div class="w3breadcrumb-gids">
+                        <div class="w3breadcrumb-left text-left">
+                            <h2 class="inner-w3-title mt-sm-5 mt-4 text-center">@yield('title')</h2>
+
+                        </div>
+                        <div class="w3breadcrumb-right">
+                            <ul class="breadcrumbs-custom-path">
+                                <li><a href="index.html">Home</a></li>
+                                <li class="active"><span class="fas fa-angle-double-right mx-2"></span>@yield('title')</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
         </div>
-    </section>
-</div>
+    @endif
+

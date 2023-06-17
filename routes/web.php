@@ -40,8 +40,13 @@ Route::prefix('user')->group(function () {
     Route::post('/send_question', [frontController::class, 'send_question'])->name('send_question');
     Route::get('/type_Properties/{id}', [frontController::class, 'typeProperties'])->name('typeProperties');
     Route::get('/properties', [frontController::class, 'showAllProperties'])->name('properties');
+    Route::get('/property_details/{id}', [frontController::class, 'show_property_details'])->name('property_details');
 
 });
+Route::get('/login', [frontController::class, 'login'])->name('login');
+Route::get('/register', [frontController::class, 'register'])->name('register');
+Route::post('/do_register', [frontController::class, 'do_register'])->name('do_register');
+
 
 
 

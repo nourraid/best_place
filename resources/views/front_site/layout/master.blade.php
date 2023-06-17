@@ -1,4 +1,6 @@
-<!doctype html>
+@yield('details_js')
+
+    <!doctype html>
 <html lang="en">
 
 <head>
@@ -11,6 +13,9 @@
     <link href="{{asset('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap')}}" rel="stylesheet">
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{asset('assets/css/style-starter.css')}}">
+
+    @yield('details_style')
+
 </head>
 
 <body>
