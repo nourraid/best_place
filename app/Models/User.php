@@ -10,6 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    public function  fav(){
+        return $this->hasMany(Favorite::class);
+    }
 
     public function city(){
         return $this->belongsTo(City::class);
@@ -24,7 +27,7 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class);
     }
 
-    public function reservation(){
+    public function reservations(){
         return $this->hasMany(Reservation::class);
     }
 

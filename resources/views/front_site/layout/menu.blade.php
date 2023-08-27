@@ -37,9 +37,15 @@
                     </li>
 
                 </ul>
-                <!--/search-->
-                <button id="trigger-overlay" class="searchw3-icon me-xl-4 me-lg-3" type="button"><i
-                        class="fas fa-search"></i></button>
+
+                <form action="{{route('search')}}">
+                    <!--/search-->
+                    <button id="trigger-overlay" class="searchw3-icon me-xl-4 me-lg-3" type="submit"><i
+                            class="fas fa-search"></i></button>
+                </form>
+                <form action="{{route('profile')}}">
+                    <button id="trigger-overlay" class="searchw3-icon me-xl-4 me-lg-3" type="submit"><i class="fas fa-user"></i></button>
+                </form>
                 <!-- open/close -->
                 <div class="overlay overlay-slidedown">
                     <button type="button" class="overlay-close"><i class="fas fa-times"></i></button>
@@ -68,6 +74,7 @@
                     </div>
                 </nav>
             </div>
+
             <!-- //toggle switch for light and dark theme -->
         </nav>
     </div>

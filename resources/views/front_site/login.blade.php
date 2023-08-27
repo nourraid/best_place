@@ -53,22 +53,23 @@
 
                                     <h4 class="mt-1 mb-5 pb-1"></h4>
                                 </div>
+                                @include('front_site.layout.masseges')
 
                                 <p>Please login to your account</p>
 
-                                <form>
-
+                                <form action="{{route('user_authenticate')}}" method="post" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="form-outline mb-4">
-                                        <input type="email" id="form2Example11" class="form-control"
+                                        <input name="email" value="{{old('email')}}" type="email" id="form2Example11" class="form-control"
                                                placeholder="email address" />
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input type="password" id="form2Example22" class="form-control"  placeholder="password" />
+                                        <input name="password" type="password" id="form2Example22" class="form-control"  placeholder="password" />
                                     </div>
 
                                     <div class="text-center pt-1 mb-5 pb-1">
-                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button" style="width: 100%;padding: 10px; font-family: cursive;">Log
+                                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" style="width: 100%;padding: 10px; font-family: cursive;">Log
                                             in</button>
                                         <br/>
                                         <a class="text-muted" href="#!">Forgot password?</a>

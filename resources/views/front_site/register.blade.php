@@ -108,7 +108,7 @@
 
                                 <p>create new account</p>
 
-                                <form action="{{route('do_register')}}" method="post" enctype="multipart/form-data">
+                                <form action="{{route('user_register')}}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="profile-pic-div">
                                         <img src="{{asset('images/userAvatar.png')}}" id="photo">
@@ -157,7 +157,8 @@
                                     </div>
 
                                         <div class="text-center pt-1 mb-5 pb-1">
-                                            <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" style="width: 100%;padding: 18px; font-family: cursive;">register</button>
+                                            <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" style="
+                                            width: 100%;padding: 18px; font-family: cursive;">register</button>
                                         </div>
 
 

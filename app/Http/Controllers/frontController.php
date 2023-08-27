@@ -6,19 +6,24 @@ use App\Mail\email;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\City;
+use App\Models\Favorite;
 use App\Models\Property;
 use App\Models\Rating;
+use App\Models\Reservation;
 use App\Models\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\Mail;
+use function PHPUnit\Framework\isEmpty;
 
 class frontController extends Controller
 {
+
     public function aboutUs(Request $request)
     {
         $properties = Property::all();
@@ -118,23 +123,153 @@ class frontController extends Controller
         return view('front_site.login');
     }
 
-    public function register()
+    public function add_fav(Request $request)
     {
-        $cities = City::all();
-        return view('front_site.register', compact(['cities']));
+        $property_id = $request->property_id;
+        $user_id = $request->user_id;
+        $favorite = DB::table('favorites')->where('property_id', $property_id)->Where('user_id', $user_id)->get();
+        if (count($favorite) > 0) {
+            return redirect()->route('property_details', $property_id)->with('error', 'property already favorite');
+        }
+        $fav = new Favorite();
+        $fav->property_id = $property_id;
+        $fav->user_id = $user_id;
+        $fav->save();
+        return redirect()->route('property_details', $property_id)->with('success', 'Property added To Favorite Successfully');
     }
 
-    public function do_register(Request $request)
+    public function reserve(Request $request)
     {
+        $property_id = $request->property_id;
+        $user_id = $request->user_id;
+        $favorite = DB::table('reservations')->where('property_id', $property_id)->Where('user_id', $user_id)->get();
+        if (count($favorite) > 0) {
+            return redirect()->route('property_details', $property_id)->with('error', 'property already reserved');
+        }
+        $reserve = new Reservation();
+        $reserve->property_id = $property_id;
+        $reserve->user_id = $user_id;
+        $reserve->state = 'waiting';
+
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $code = '';
+
+        for ($i = 0; $i < 6 ; $i++) {
+            $index = random_int(0, strlen($characters) - 1);
+            $code .= $characters[$index];
+        }
+
+        $reserve->reservation_code = $code;
+
+        $reserve->save();
+        return redirect()->route('property_details', $property_id)->with('success', 'Property reserved Successfully');
+    }
+
+    public function profile(){
+        $id = Auth::id() ;
+        $user =  User::find($id);
+        $favorites = $user->fav;
+        $reservations = $user->reservations;
+        $properties = $user->properties;
+
+        return view('front_site.profile',compact('user' , 'favorites' , 'reservations','properties'));
+    }
+    public function property_reservations($id){
+            $property = Property::find($id);
+        $property_reservations =    $property->reservations ;
+            return view('front_site.property_reservations', compact('property','property_reservations'));
+    }
+    public function search(){
+        $types = Type::all();
+        $cities = City::all();
+
+        return view('front_site.search', compact( 'types'  , 'cities'));
+    }
+
+
+    public function do_search(Request $request)
+    {
+        if (!isEmpty($request)){
+            $min_price = $request->minPrice ;
+            $max_price = $request->maxPrice ;
+            $properties = DB::table('properties')->where('name', 'like', '%' . $request->name . '%')->orWhere('city_id' , $request->city_id )->orWhere('type_id' , $request->type_id)->whereBetween('price', [$min_price, $max_price])->get();
+            return view('front_site.allProperties', compact('request', 'properties'));
+        }else{
+            return redirect()->back()->with('error', 'no data set?!');
+        }
+ }
+
+    public function user_authenticate(Request $request)
+    {
+        $login_data = ['email' => $request->email, 'password' => $request->password];
+        if (Auth::guard('web')->attempt($login_data)) {
+            return redirect()->route('home');
+//            return redirect()->route('profile' , Auth::user());
+        }
+        return redirect()->back()->with('error', 'invalid username or password');
+    }
+
+    public function user_logout()
+    {
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+            return view('front_site.login');
+
+        }
+    }
+
+    public function user_reset($id)
+    {
+        return view('front_site.edite_password', compact('id'));
+    }
+
+    public function user_do_reset(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $rules = [
+            'password' => 'required|confirmed',
+            'old_password' => 'required',
+        ];
+
+        $masseges = [
+            'old_password.required' => 'password must be entered',
+            'password.required' => 'password must be entered',
+            'password.confirmed' => 'password must be matched',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $masseges);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return redirect()->route('profile' , $user)->with('success', 'Reset Password Admin Successfully');;
+        } else {
+            return redirect()->back()->withErrors('incorrect old password');
+        }
+
+    }
+
+    public function user_change($id)
+    {
+        $user = User::find($id);
+        $cities = City::all();
+        return view('front_site.edite_profile', compact('user' , 'cities'));
+    }
+
+    public function user_do_change(Request $request , $id)
+    {
+        $user = User::find($id);
         $rules = [
             'fname' => 'required',
             'mname' => 'required',
             'lname' => 'required',
             'email' => 'required',
-            'password' => 'required',
             'city_id' => 'required',
             'mobileNumber' => 'required',
-            'userImage' => 'required',
         ];
         $masseges = [
             'fname.required' => 'first name must be Entered',
@@ -142,36 +277,69 @@ class frontController extends Controller
             'lname.required' => 'last name must be Entered',
             'email.required' => 'email must be Entered',
             'city_id.required' => 'city must be Entered',
-            'password.required' => 'password must be Entered',
             'mobileNumber.required' => 'mobile number must be Entered',
-            'userImage.required' => 'image must be entered'
         ];
 
         $validator = Validator::make($request->all(), $rules, $masseges);
         if ($validator->fails()) {
-
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
-        $user = new User();
         $user->firstName = $request->fname;
         $user->middleName = $request->mname;
         $user->lastName = $request->lname;
         $user->email = $request->email;
         $user->city_id = $request->city_id;
         $user->mobile_number = $request->mobileNumber;
-        $user->password = Hash::make($request->password);
 
 
-        $user_image = $request->file('userImage');
-        $file_name = $user->mobile_number . time() . '.' . $user_image->extension();
-        $user_image->move('images/user', $file_name);
-        $user->userImage = $file_name;
+        if ($request->file('userImage') != null) {
+            $ext = $request->file('userImage')->extension();
+//            dd($ext);
+            // || $ext != 'jpeg' || $ext != 'jfif' || $ext != 'pjpeg' || $ext != 'pjp' || $ext != 'png' || $ext != 'webp'
+            if ($ext != 'jpg') {
+                return redirect()->back()->with('error', 'your image must be image type !?');
+            }
+            $user_image = $request->file('userImage');
+            $file_name = $user->phoneNumber . time() . '.' . $user_image->extension();
+            $user_image->move('images/user', $file_name);
+            $user->userImage = $file_name;
+        }
 
         $user->save();
 
-
-        return redirect()->route('login');
+        return redirect()->route('profile', $user)->with('success', 'your information Updated Successfully');
 
     }
 
+    public function reject($id){
+        $user = Auth::user();
+        $reservation = Reservation::find($id);
+        $reservation->state = 'rejected';
+        $reservation->save();
+
+        return redirect()->back()->with('success', 'reject request Successfully');
+
+//        return redirect()->route('profile', $user)->with('success', 'your information Updated Successfully');
+
+    }
+    public function accept($id){
+        $user = Auth::user();
+        $reservation = Reservation::find($id);
+        $reservation->state = 'accepted';
+        $reservation->save();
+        return redirect()->back()->with('success', 'accept request Successfully');
+
+//        return redirect()->route('profile', $user)->with('success', 'your information Updated Successfully');
+
+    }
+
+    public function user_login(Request $request)
+    {
+
+        if (Auth::user()){
+            return redirect()->route('home');
+        }else{
+            return view('front_site.login');
+        }
+    }
 }

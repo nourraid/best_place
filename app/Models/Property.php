@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Property extends Model
 {
+    public function  fav(){
+        return $this->hasMany(Favorite::class);
+    }
+
     public function  user(){
         return $this->belongsTo(User::class);
     }

@@ -36,9 +36,12 @@
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Home</a>
             </li>
-            {{--            <li class="nav-item d-none d-sm-inline-block">--}}
-            {{--                <a href="#" class="nav-link">LogOut</a>--}}
-            {{--            </li>--}}
+            <li class="nav-item">
+                <a class="nav-link" data-widget="navbar-logout" href="{{route('logout')}}" role="button">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </li>
+
 
         </ul>
 
