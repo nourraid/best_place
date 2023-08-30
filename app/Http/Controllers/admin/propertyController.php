@@ -47,6 +47,7 @@ class propertyController extends Controller
             'city_id' => 'required' ,
             'user_id' => 'required' ,
             'type_id' => 'required' ,
+            'Certificate' => 'required' ,
             'imageName' => 'required'];
 
         $masseges = [
@@ -61,6 +62,7 @@ class propertyController extends Controller
             'user_id.required' => 'user must be entered',
             'type_id.required' => 'type must be entered',
             'imageName.required' => 'image must be entered',
+            'Certificate.required' => 'Certificate image must be entered',
         ];
 
         $validator = Validator::make($request->all(), $rules, $masseges);
@@ -78,13 +80,20 @@ class propertyController extends Controller
         $property->type_id = $request->type_id;
 
         $property_image = $request->file('imageName');
-        $file_name = $property->name . time() . '.' . $property_image->extension();
-        $property_image->move('images/property/', $file_name);
+        $file_name1 = $property->name . time() . '.' . $property_image->extension();
+        $property_image->move('images/property/', $file_name1);
+        $property->image = $file_name1;
 
-        $property->image = $file_name;
+
+        $property_Certificate_image = $request->file('Certificate');
+        $file_name2 = $property->name . time() . '.' . $property_Certificate_image->extension();
+        $property_Certificate_image->move('images/Certificate_of_ownership/', $file_name2);
+        $property->Certificate_of_ownership = $file_name2;
+
+        $property->state = 'waiting';
         $property->save();
 
-        return redirect()->route('property.index')->with('success', 'Type Added Successfully');
+        return redirect()->route('property.index')->with('success', 'property Added Successfully');
 
     }
 
@@ -121,6 +130,7 @@ class propertyController extends Controller
             'city_id' => 'required' ,
             'user_id' => 'required' ,
             'type_id' => 'required' ,
+            'state' => 'required' ,
             ];
 
         $masseges = [
@@ -134,6 +144,7 @@ class propertyController extends Controller
             'city_id.required' => 'city must be entered',
             'user_id.required' => 'user must be entered',
             'type_id.required' => 'type must be entered',
+            'state.required' => 'state must be entered',
         ];
 
         $validator = Validator::make($request->all(), $rules, $masseges);
@@ -149,6 +160,7 @@ class propertyController extends Controller
         $property->city_id = $request->city_id;
         $property->user_id = $request->user_id;
         $property->type_id = $request->type_id;
+        $property->state = $request->state;
 
 
         if ($request->file('image_name') != null) {
@@ -157,6 +169,7 @@ class propertyController extends Controller
             $property_image->move('images/property/', $file_name);
             $property->image = $file_name;
         }
+
 
         $property->save();
 

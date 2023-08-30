@@ -55,6 +55,8 @@ Route::prefix('user')->middleware('auth:web')->group(function () {
     Route::post('/add_fav', [frontController::class, 'add_fav'])->name('add_fav');
     Route::post('/reserve', [frontController::class, 'reserve'])->name('reserve');
     Route::get('/profile', [frontController::class, 'profile'])->name('profile');
+    Route::get('/add_property', [frontController::class, 'add_property'])->name('add_property');
+    Route::post('/do_add_property', [frontController::class, 'do_add_property'])->name('do_add_property');
 
     Route::get('/user/{id}/change', [frontController::class, 'user_change'])->name('user.change');
     Route::put('/user/{id}/reset/do_change', [frontController::class, 'user_do_change'])->name('user.do_change');
@@ -69,6 +71,10 @@ Route::prefix('user')->middleware('auth:web')->group(function () {
     Route::get('/property_reservations/{id}', [frontController::class, 'property_reservations'])->name('property_reservations');
     Route::put('/accept/{id}', [frontController::class, 'accept'])->name('accept');
     Route::put('/reject/{id}', [frontController::class, 'reject'])->name('reject');
+    Route::post('/delete_fav', [frontController::class, 'delete_fav'])->name('delete_fav');
+    Route::post('/delete_my_property', [frontController::class, 'delete_my_property'])->name('delete_my_property');
+    Route::post('/delete_my_request', [frontController::class, 'delete_my_request'])->name('delete_my_request');
+
 
 });
 

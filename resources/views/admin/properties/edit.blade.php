@@ -12,7 +12,6 @@
           <div class="card card-primary">
             <div class="card-header">
               <h3 class="card-title">Edit Property</h3>
-{{$property}}
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                   <i class="fas fa-minus"></i>
@@ -70,6 +69,24 @@
                     @endforeach
                 </select>
               </div>
+
+
+                <div class="form-group">
+                    <label for="inputStatus">state</label>
+                    <select name="state" id="inputStatus" class="form-control custom-select">
+                        <option selected disabled>Select one</option>
+                        @php
+                        $states = ['waiting' , 'accept' , 'reject'];
+                        @endphp
+
+                        @foreach($states as $state)
+                            <option value="{{$state}}" {{$property->state == $state ? 'selected' : ''}}>
+                                {{$state}}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
 
 
                 <div class="form-group">

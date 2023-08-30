@@ -41,7 +41,14 @@
                             <div class="form-group">
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="customFile" name="imageName" value="{{old('imageName')}}">
-                                    <label class="custom-file-label" for="customFile">Choose image</label>
+                                    <label class="custom-file-label" for="customFile">Choose property image</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile" name="Certificate" value="{{old('Certificate')}}">
+                                    <label class="custom-file-label" for="Certificate">Choose Certificate image</label>
                                 </div>
                             </div>
 

@@ -26,7 +26,8 @@ class frontController extends Controller
 
     public function aboutUs(Request $request)
     {
-        $properties = Property::all();
+
+        $properties = Property::where('state', '=', 'accept')->get();
         $users = User::all();
         $rates = DB::table('ratings')->select('rating')->get()->toArray();
         $completed_properties = DB::table('reservations')->where('state', 'Completed')->get();
@@ -52,7 +53,9 @@ class frontController extends Controller
     public function home(Request $request)
     {
         $types = Type::orderByDesc('created_at')->take(6)->get();
-        $properties = Property::orderByDesc('created_at')->take(6)->get();
+        $properties = Property::where('state', '=', 'accept')->orderByDesc('created_at')->take(6)->get();
+
+//        $properties = Property::orderByDesc('created_at')->take(6)->get();
 
         return view('front_site.home', compact('properties', 'types'));
     }
@@ -101,14 +104,16 @@ class frontController extends Controller
     public function typeProperties($id)
     {
         $type = Type::find($id);
-        $properties = $type->properties;
+        $properties = $type->properties->where('state', '=', 'accept');
 
         return view('front_site.properties_type', compact('type', 'properties'));
     }
 
     public function showAllProperties()
     {
-        $properties = Property::all();
+        $properties = Property::where('state', '=', 'accept')->get();
+
+//        $properties = Property::all();
         return view('front_site.allProperties', compact('properties'));
     }
 
@@ -138,6 +143,30 @@ class frontController extends Controller
         return redirect()->route('property_details', $property_id)->with('success', 'Property added To Favorite Successfully');
     }
 
+    public function delete_fav(Request $request)
+    {
+        Favorite::find($request->fav_id)->delete();
+        return redirect()->route('profile')->with('success', 'property removed from favorite successfully');
+    }
+
+    public function delete_my_request(Request $request)
+    {
+        Reservation::find($request->res_id)->delete();
+        return redirect()->route('profile')->with('success', 'request removed successfully');
+    }
+
+    public function delete_my_property(Request $request)
+    {
+
+        $property = Property::find($request->property_id);
+        $property->fav()->delete();
+        $property->reservations()->delete();
+        $property->delete();
+
+        return redirect()->route('profile')->with('success', 'property removed successfully');
+    }
+
+
     public function reserve(Request $request)
     {
         $property_id = $request->property_id;
@@ -154,7 +183,7 @@ class frontController extends Controller
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $code = '';
 
-        for ($i = 0; $i < 6 ; $i++) {
+        for ($i = 0; $i < 6; $i++) {
             $index = random_int(0, strlen($characters) - 1);
             $code .= $characters[$index];
         }
@@ -165,39 +194,125 @@ class frontController extends Controller
         return redirect()->route('property_details', $property_id)->with('success', 'Property reserved Successfully');
     }
 
-    public function profile(){
-        $id = Auth::id() ;
-        $user =  User::find($id);
+    public function profile()
+    {
+        $id = Auth::id();
+        $user = User::find($id);
         $favorites = $user->fav;
         $reservations = $user->reservations;
         $properties = $user->properties;
 
-        return view('front_site.profile',compact('user' , 'favorites' , 'reservations','properties'));
+        return view('front_site.profile', compact('user', 'favorites', 'reservations', 'properties'));
     }
-    public function property_reservations($id){
-            $property = Property::find($id);
-        $property_reservations =    $property->reservations ;
-            return view('front_site.property_reservations', compact('property','property_reservations'));
+
+    public function add_property()
+    {
+        $id = Auth::id();
+        $cities = City::all();
+        $types = Type::all();
+        $user = User::find($id);
+        $favorites = $user->fav;
+        $reservations = $user->reservations;
+        $properties = $user->properties;
+
+        return view('front_site.add_property', compact('user', 'types', 'cities', 'favorites', 'reservations', 'properties'));
     }
-    public function search(){
+
+    public function do_add_property(Request $request)
+    {
+        $rules = ['name' => 'required|max:25|min:4',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'address' => 'required',
+            'city_id' => 'required',
+            'type_id' => 'required',
+            'Certificate' => 'required',
+            'imageName' => 'required'];
+
+        $masseges = [
+            'name.required' => 'name must be entered',
+            'name.min' => 'name must be more than 4',
+            'name.max' => 'name must less than 25',
+            'description.required' => 'description must be entered',
+            'price.required' => 'price must be entered',
+            'price.numeric' => 'price must be number',
+            'address.required' => 'address must be entered',
+            'city_id.required' => 'city must be entered',
+            'type_id.required' => 'type must be entered',
+            'imageName.required' => 'image must be entered',
+            'Certificate.required' => 'Certificate image must be entered',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $masseges);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
+        $property = new Property();
+        $property->name = $request->name;
+        $property->description = $request->description;
+        $property->price = $request->price;
+        $property->address = $request->address;
+        $property->city_id = $request->city_id;
+        $property->user_id = Auth::user()->id;
+        $property->type_id = $request->type_id;
+
+        $property_image = $request->file('imageName');
+        $file_name1 = $property->name . time() . '.' . $property_image->extension();
+        $property_image->move('images/property/', $file_name1);
+        $property->image = $file_name1;
+
+
+        $property_Certificate_image = $request->file('Certificate');
+        $file_name2 = $property->name . time() . '.' . $property_Certificate_image->extension();
+        $property_Certificate_image->move('images/Certificate_of_ownership/', $file_name2);
+        $property->Certificate_of_ownership = $file_name2;
+
+        $property->state = 'waiting';
+        $property->save();
+
+        return redirect()->route('profile')->with('success', 'property Added Successfully');
+
+    }
+
+
+    public function property_reservations($id)
+    {
+        $property = Property::find($id);
+        $property_reservations = $property->reservations;
+        return view('front_site.property_reservations', compact('property', 'property_reservations'));
+    }
+
+    public function search()
+    {
         $types = Type::all();
         $cities = City::all();
 
-        return view('front_site.search', compact( 'types'  , 'cities'));
+        return view('front_site.search', compact('types', 'cities'));
     }
 
 
     public function do_search(Request $request)
     {
-        if (!isEmpty($request)){
-            $min_price = $request->minPrice ;
-            $max_price = $request->maxPrice ;
-            $properties = DB::table('properties')->where('name', 'like', '%' . $request->name . '%')->orWhere('city_id' , $request->city_id )->orWhere('type_id' , $request->type_id)->whereBetween('price', [$min_price, $max_price])->get();
-            return view('front_site.allProperties', compact('request', 'properties'));
-        }else{
-            return redirect()->back()->with('error', 'no data set?!');
-        }
- }
+        $min_price = $request->minPrice;
+        $max_price = $request->maxPrice;
+        $properties = DB::table('properties')->where('name', 'like', '%' . $request->name . '%')->where('state' , '=' , 'accept')->orWhere('city_id', $request->city_id)->orWhere('type_id', $request->type_id)->whereBetween('price', [$min_price, $max_price])->get();
+
+        return view('front_site.allProperties', compact('request', 'properties'));
+
+//        if (!isEmpty($request)->count()) {
+//
+//        $min_price = $request->minPrice;
+//        $max_price = $request->maxPrice;
+//        $properties = DB::table('properties')->where('name', 'like', '%' . $request->name . '%')->where('state', '=', 'accept')->orWhere('city_id', $request->city_id)->orWhere('type_id', $request->type_id)->whereBetween('price', [$min_price, $max_price])->get();
+//
+//        return view('front_site.allProperties', compact('request', 'properties'));
+//
+//        } else {
+//            return redirect()->back()->with('error', 'no data set?!');
+//
+//        }
+    }
 
     public function user_authenticate(Request $request)
     {
@@ -246,7 +361,7 @@ class frontController extends Controller
         if (Hash::check($request->old_password, $user->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
-            return redirect()->route('profile' , $user)->with('success', 'Reset Password Admin Successfully');;
+            return redirect()->route('profile', $user)->with('success', 'Reset Password Admin Successfully');;
         } else {
             return redirect()->back()->withErrors('incorrect old password');
         }
@@ -257,10 +372,10 @@ class frontController extends Controller
     {
         $user = User::find($id);
         $cities = City::all();
-        return view('front_site.edite_profile', compact('user' , 'cities'));
+        return view('front_site.edite_profile', compact('user', 'cities'));
     }
 
-    public function user_do_change(Request $request , $id)
+    public function user_do_change(Request $request, $id)
     {
         $user = User::find($id);
         $rules = [
@@ -311,7 +426,8 @@ class frontController extends Controller
 
     }
 
-    public function reject($id){
+    public function reject($id)
+    {
         $user = Auth::user();
         $reservation = Reservation::find($id);
         $reservation->state = 'rejected';
@@ -322,7 +438,9 @@ class frontController extends Controller
 //        return redirect()->route('profile', $user)->with('success', 'your information Updated Successfully');
 
     }
-    public function accept($id){
+
+    public function accept($id)
+    {
         $user = Auth::user();
         $reservation = Reservation::find($id);
         $reservation->state = 'accepted';
@@ -336,9 +454,9 @@ class frontController extends Controller
     public function user_login(Request $request)
     {
 
-        if (Auth::user()){
+        if (Auth::user()) {
             return redirect()->route('home');
-        }else{
+        } else {
             return view('front_site.login');
         }
     }

@@ -849,6 +849,8 @@
                                 <div>
                                     <i class="ni education_hat mr-2"></i>{{$user->email}}
                                 </div>
+
+
                                 <div style="margin:10px">
 
                                     <a href="{{route('user.change' , $user->id)}}">
@@ -863,7 +865,7 @@
                                     </a>
                                 </div>
                                 <div style="margin:10px">
-                                    <a href="{{route('property.create')}}">
+                                    <a href="{{route('add_property')}}">
                                         <button class="btn btn-success"><i class="fa fa-edit"></i>add property</button>
                                     </a>
                                 </div>
@@ -911,12 +913,7 @@
                                                         <div class="w3property-grid">
                                                             <a href="{{route('property_details',$fav->property->id)}}">
                                                                 <div class="box16">
-                                                                    <div class="rentext-listing-category">
-                                                                        <span> {{\App\Models\Type::find($fav->property->type_id)->name}}</span>
-                                                                    </div>
-                                                                    {{--                                                    <img class="img-fluid" src="{{asset("{{asset('images/property/'.$fav->property->image)}}")}}" alt="">--}}
-                                                                    <img class="img-fluid"
-                                                                         src="{{asset('images/g1.jpg')}}" alt="">
+                                                                    <img class="img-fluid" src="{{asset('images/property/'.$fav->property->image)}}"  alt="">
                                                                     <div class="box-content">
                                                                         <h3 class="title">{{$fav->property->name}}</h3>
                                                                         <span
@@ -948,13 +945,18 @@
                                                  @endphp
                                                 {{$user->firstName}}
                                             </span>
-
-                                            <span class="suffix">
-                                            </span>
                                         </span>
                                                                     </li>
                                                                 </ul>
+                                                                <hr/>
                                                             </div>
+                                                            <form action='{{route('delete_fav')}}' method='post'>
+                                                                @csrf
+                                                                <input type="hidden" value="{{$fav->id}}" name="fav_id">
+                                                                <button type="submit" class="btn btn-outline-danger"
+                                                                        name="delete">remove
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -970,14 +972,16 @@
                                                 @foreach($properties as $property)
                                                     <div class="col-lg-4 col-md-6 mt-lg-4 pt-lg-0 mt-4 pt-md-2">
                                                         <div class="w3property-grid">
-                                                            <a href="{{route('property_reservations',$property->id)}}">
+                                                            @php
+                                                                $state  =  $property->state  ;
+                                                            @endphp
+                                                            <a @if($state == "accept") href="{{route('property_reservations',$property->id)}}" @endif>
                                                                 <div class="box16">
                                                                     <div class="rentext-listing-category">
                                                                         <span> {{\App\Models\Type::find($property->type_id)->name}}</span>
                                                                     </div>
-                                                                    {{--                                                    <img class="img-fluid" src="{{asset("{{asset('images/property/'.$fav->property->image)}}")}}" alt="">--}}
-                                                                    <img class="img-fluid"
-                                                                         src="{{asset('images/g1.jpg')}}" alt="">
+                                                                    <img class="img-fluid" src="{{asset('images/property/'.$property->image)}}" alt="">
+
                                                                     <div class="box-content">
                                                                         <h3 class="title">{{$property->name}}</h3>
                                                                         <span
@@ -995,27 +999,45 @@
                                             <span
                                                 class="value"> {{\App\Models\City::find($property->city_id)->name}}  </span>
 
-                                            <span class="suffix">
-                                            </span>
                                         </span>
                                                                     </li>
+
                                                                     <li>
                                                                         <i class="fas fa-user"></i>
                                                                         <span class="listable-value">
 
                                             <span class="value">
                                                  @php
-                                                     $user = \App\Models\User::find($fav->property->user_id)
+                                                     $user = \App\Models\User::find($property->user_id)
                                                  @endphp
                                                 {{$user->firstName}}
                                             </span>
-
-                                            <span class="suffix">
-                                            </span>
                                         </span>
                                                                     </li>
+
                                                                 </ul>
+                                                                <div>
+
+                                                                    @if($state == 'waiting')
+                                                                        {{'waiting'}}
+                                                                    @elseif($state == "accept")
+                                                                        {{'accepted'}}
+                                                                    @else
+                                                                        {{'rejected'}}
+                                                                    @endif
+
+                                                                </div>
+                                                                <hr/>
                                                             </div>
+                                                            <form action='{{route('delete_my_property')}}'
+                                                                  method='post'>
+                                                                @csrf
+                                                                <input type="hidden" value="{{$property->id}}"
+                                                                       name="property_id">
+                                                                <button type="submit" class="btn btn-outline-danger"
+                                                                        name="delete">remove
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -1031,14 +1053,13 @@
                                                 @foreach($reservations as $res)
                                                     <div class="col-lg-4 col-md-6 mt-lg-4 pt-lg-0 mt-4 pt-md-2">
                                                         <div class="w3property-grid">
-                                                            <a href="{{route('property_reservations',$res->property->id)}}">
+                                                            <a href="">
                                                                 <div class="box16">
                                                                     <div class="rentext-listing-category">
                                                                         <span> {{\App\Models\Type::find($res->property->type_id)->name}}</span>
                                                                     </div>
-                                                                    {{--                                                    <img class="img-fluid" src="{{asset("{{asset('images/property/'.$fav->property->image)}}")}}" alt="">--}}
-                                                                    <img class="img-fluid"
-                                                                         src="{{asset('images/g1.jpg')}}" alt="">
+                                                                    <img class="img-fluid" src="{{asset('images/property/'.$res->property->image)}}" alt="">
+
                                                                     <div class="box-content">
                                                                         <h3 class="title">{{$res->property->name}}</h3>
                                                                         <span
@@ -1062,7 +1083,7 @@
 
                                                                     <li>
                                                                         <i class="fas fa-user"></i>
-                                                                            <span class="listable-value">
+                                                                        <span class="listable-value">
 
                                                                                 <span class="value">
                                                                                      @php
@@ -1081,16 +1102,16 @@
                                                                                 @php
                                                                                     $state  =  $res->state  ;
                                                                                 @endphp
-                                                                                   @if($state == 'waiting')
-                                                                                       {{'waiting'}}
-                                                                                   @elseif($state == "accepted")
+                                                                                @if($state == 'waiting')
+                                                                                    {{'waiting'}}
+                                                                                @elseif($state == "accepted")
                                                                                     @php
                                                                                         $user = \App\Models\User::find($res->property->user_id)
                                                                                     @endphp
                                                                                     {{$user->mobile_number}}
                                                                                 @else
-                                                                                       {{'rejected'}}
-                                                                                   @endif
+                                                                                    {{'rejected'}}
+                                                                                @endif
 
                                                                             </span>
                                                                         </span>
@@ -1098,7 +1119,13 @@
 
                                                                 </ul>
                                                             </div>
-
+                                                            <form action='{{route('delete_my_request')}}' method='post'>
+                                                                @csrf
+                                                                <input type="hidden" value="{{$res->id}}" name="res_id">
+                                                                <button type="submit" class="btn btn-outline-danger"
+                                                                        name="delete">remove
+                                                                </button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 @endforeach

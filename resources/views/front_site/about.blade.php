@@ -133,7 +133,8 @@
                     </div>
                     <div class="col-lg-3 col-6 stats_info counter_grid mt-lg-0 mt-4">
 
-                        <p class="counter">{{array_sum($rates)/count($rates)}}</p>
+
+{{--                        <p class="counter">{{array_sum($rates)/count($rates)}}</p>--}}
 
                         <h3>Rating Avg</h3>
                     </div>

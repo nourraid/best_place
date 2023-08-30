@@ -15,11 +15,10 @@
                         @foreach($properties as $property)
                             <div class="col-lg-4 col-md-6 mt-lg-4 pt-lg-0 mt-4 pt-md-2">
                                 <div class="w3property-grid">
-                                    <a href="#property">
-                                        <div class="box16">
+                                    <a href="{{route('property_details',$property->id)}}">
+                                        <div style="height: 250px" class="box16">
                                             <div class="rentext-listing-category"><span> {{\App\Models\Type::find($property->type_id)->name}}</span></div>
-                                            {{--                                        <img class="img-fluid" src="{{asset('images/property/'.$property->image)}}" alt="">--}}
-                                            <img class="img-fluid" src="{{asset('images/g1.jpg')}}" alt="">
+                                            <img style="height: 250px" class="img-fluid" src="{{asset('images/property/'.$property->image)}}" alt="">
                                             <div class="box-content">
                                                 <h3 class="title">{{$property->name}}</h3>
                                                 <span class="post"> {{$property->address}}</span>

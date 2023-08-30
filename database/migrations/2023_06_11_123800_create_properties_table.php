@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->double('price');
             $table->string('image');
+            $table->string('Certificate_of_ownership');
+            $table->string('state');
             $table->string('address');
             $table->unsignedBigInteger("city_id");
             $table->unsignedBigInteger("type_id");

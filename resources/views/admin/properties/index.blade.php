@@ -48,6 +48,16 @@
                             Property  Image
                         </th>
 
+
+                        <th>
+                            Certificate Image
+                        </th>
+
+
+                        <th>
+                            Property  state
+                        </th>
+
                         <th>
                             Property city
                         </th>
@@ -100,6 +110,15 @@
                                 <img alt="Image" class="table-avatar"
                                      style=" border-radius: 2%; display: inline;width: 4rem;"
                                      src="{{asset('images/property/'.$property->image)}}">
+                            </td>
+
+                            <td>
+                                <img alt="Image" class="table-avatar"
+                                     style=" border-radius: 2%; display: inline;width: 4rem;"
+                                     src="{{asset('images/Certificate_of_ownership/'.$property->Certificate_of_ownership)}}">
+                            </td>
+                            <td>
+                                {{$property->state}}
                             </td>
 
                             <td>
